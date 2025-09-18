@@ -24,6 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+//User Registration and Login commands
 import { faker } from '@faker-js/faker';
 import SignupPage from '../pages/SignupPage';
 
@@ -61,5 +62,36 @@ Cypress.Commands.add('loginUser', () => {
         cy.get("button[data-qa='login-button']").click();
         signupPage.verifyLoggedIn();
     });
+});
+
+//Product filterting commands
+import ProductPage from '../pages/ProductPage';
+
+Cypress.Commands.add('verifyProduct', (category, subCategory, keyword) => {
+    const productPage = new ProductPage();
+
+    productPage.visitProductsPage();
+    productPage.filterCategory(category, subCategory);
+    productPage.verifyFilteredProducts(keyword);
+    productPage.clickFirstProduct();
+    productPage.verifyProductDetails(keyword);
+});
+
+//Cart Quantity commands
+Cypress.Commands.add('addProductToCart', (category, subCategory, quantity = 1) => {
+    cy.contains(category).click();
+    cy.contains(subCategory).click();
+    cy.get('.features_items .choose a')
+        .contains('View Product')
+        .first()
+        .click();
+
+    // Set quantity if more than 1
+    if (quantity > 1) {
+        cy.get('#quantity').clear().type(quantity);
+    }
+
+    cy.contains('Add to cart').click();
+    cy.contains('Continue Shopping').click();
 });
 
