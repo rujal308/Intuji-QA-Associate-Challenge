@@ -6,8 +6,8 @@ describe('Logout and Relogin', () => {
 
     // Load saved user credentials
     cy.fixture('user').then((user) => {
-      const email = user.randomEmail;
-      const password = user.randomPassword;
+      const email = user.email;
+      const password = user.password;
 
       // Visit login page
       loginPage.visit();
