@@ -81,14 +81,14 @@ Cypress.Commands.add('verifyProduct', (category, subCategory, keyword) => {
 Cypress.Commands.add('addProductToCart', (category, subCategory, quantity = 1) => {
     cy.contains(category).click();
     cy.contains(subCategory).click();
-    cy.get('.features_items .choose a')
-        .contains('View Product')
-        .first()
-        .click();
 
-    // Set quantity if more than 1
+    cy.get('.features_items .product-image-wrapper .choose').first().click();
+
     if (quantity > 1) {
-        cy.get('#quantity').clear().type(quantity);
+        cy.get('#quantity')
+          .should('be.visible')
+          .clear()
+          .type(quantity, { force: true });
     }
 
     cy.contains('Add to cart').click();
